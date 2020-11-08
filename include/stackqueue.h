@@ -11,9 +11,10 @@ class Stack
 {
 protected:
 	T *pStack;
-	int Size;
+	
 	int Max;
 public:
+	int Size;
 	Stack(int s = 10);
 	Stack(const Stack &s);
 	~Stack();
@@ -178,23 +179,24 @@ template <class T>
 void Queue<T>::Push(T elem)
 {
 	s1.Push(elem);
+	Size++;
 }
 
 template <class T>
 void Queue<T>::Pop()
 {
-	while (!s1.Empty())
+	if (s1.Empty() && s2.Empty()) 
+		throw "Smth wrong";
+	if (s2.Empty())
 	{
-		s2.Push(s1.Top());
-		s1.Pop();
+		while (!s1.Empty())
+		{
+			s2.Push(s1.Top());
+			s1.Pop();
+		}
 	}
 	s2.Pop();
-
-	while (!s2.Empty())
-	{
-		s1.Push(s2.Top());
-		s2.Pop();
-	}
+	Size--;
 }
 
 template <class T>
@@ -218,7 +220,17 @@ bool Queue<T>::operator!=(const Queue &q)
 template <class T>
 T Queue<T>::operator[](int pos)
 {
+	if (pos >= Size)
+		throw "Out of range";
 	if (s2.Empty())
-		return s1[pos + Ise];
-	return s2[pos];
+		return s1[pos];
+	else if(s1.Empty())
+		return s2[s2.Size - pos - 1];
+	else
+	{
+		if (pos < s2.Size)
+			return s2[s2.Size - pos - 1];
+		else
+			return s1[pos - s2.Size];
+	}
 }

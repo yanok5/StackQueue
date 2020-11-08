@@ -117,6 +117,8 @@ TEST(Queue, works_correctly)
 	q.Push(5);
 	q.Pop();
 	q.Push(6);
+	auto item = q[4];
+	double st = 0;
 	EXPECT_EQ(6, q[4]);
 }
 
