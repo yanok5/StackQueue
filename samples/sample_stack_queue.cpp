@@ -1,33 +1,31 @@
-// ННГУ, ВМК, Курс "Методы программирования-2", С++, ООП
-//
-// sample_matrix.cpp - Copyright (c) Гергель В.П. 07.05.2001
-//   Переработано для Microsoft Visual Studio 2008 Сысоевым А.В. (20.04.2015)
-//
-// Тестирование верхнетреугольной матрицы
+#pragma once
 
 #include <iostream>
-#include "utmatrix.h"
-//---------------------------------------------------------------------------
+#include "stackqueue.h"
 
-int main()
+bool TrueBrackets(string s)
 {
-  TMatrix<int> a(5), b(5), c(5);
-  int i, j;
-
-  setlocale(LC_ALL, "Russian");
-  cout << "Тестирование программ поддержки представления треугольных матриц"
-    << endl;
-  for (i = 0; i < 5; i++)
-    for (j = i; j < 5; j++ )
-    {
-      a[i][j] =  i * 10 + j;
-      b[i][j] = (i * 10 + j) * 100;
-    }
-  c = a + b;
-  cout << "Matrix a = " << endl << a << endl;
-  cout << "Matrix b = " << endl << b << endl;
-  cout << "Matrix c = a + b" << endl << c << endl;
-  
-  return 0;
+	Stack<char> st;
+	for (size_t i = 0; i < s.size(); i++)
+	{
+		if (s[i] == '(' || s[i] == '[' || s[i] == '{')
+			st.Push(s[i]);
+		else if (st.Top() == '(' && s[i] == ')' && !st.Empty())
+			st.Pop();
+		else if (st.Top() == '[' && s[i] == ']' && !st.Empty())
+			st.Pop();
+		else if (st.Top() == '{' && s[i] == '}' && !st.Empty())
+			st.Pop();
+		else return false;
+	}
+	if (st.Empty())
+		return true;
+	else return false;
 }
-//---------------------------------------------------------------------------
+
+int main(int argc, char** argv)
+{
+	if (argc > 1)
+		cout << TrueBrackets(argv[1]) << endl;
+	return 0;
+}
