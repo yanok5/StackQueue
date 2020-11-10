@@ -10,11 +10,11 @@ bool TrueBrackets(string s)
 	{
 		if (s[i] == '(' || s[i] == '[' || s[i] == '{')
 			st.Push(s[i]);
-		else if (st.Top() == '(' && s[i] == ')' && !st.Empty())
+		else if (!st.Empty() && st.Top() == '(' && s[i] == ')')
 			st.Pop();
-		else if (st.Top() == '[' && s[i] == ']' && !st.Empty())
+		else if (!st.Empty() && st.Top() == '[' && s[i] == ']')
 			st.Pop();
-		else if (st.Top() == '{' && s[i] == '}' && !st.Empty())
+		else if (!st.Empty() && st.Top() == '{' && s[i] == '}')
 			st.Pop();
 		else return false;
 	}
